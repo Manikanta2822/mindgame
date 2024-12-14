@@ -1,0 +1,135 @@
+/* General body styles */
+body {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b); /* Gradient background */
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+h2 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Player input section */
+#playerInput {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+#playerInput input,
+#playerInput select {
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+#playerInput input:focus,
+#playerInput select:focus {
+    border: 2px solid #007bff;
+}
+
+button {
+    padding: 15px 30px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Game board container */
+#gameBoardContainer {
+    display: none;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Score area */
+#scoreArea {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Game board layout */
+#gameBoard {
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 80px;
+    height: 80px;
+    background-color: #ff4b2b;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.1);
+}
+
+.card.flipped {
+    background-color: #007bff;
+    transform: scale(1.05);
+}
+
+.card.matched {
+    background-color: #28a745;
+    pointer-events: none;
+}
+
+/* Winning message */
+#winner {
+    font-size: 24px;
+    color: #ff416c;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#gameBoard {
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+}
+
+/* Responsive grid layout */
+@media (max-width: 600px) {
+    .card {
+        width: 60px;
+        height: 60px;
+    }
+
+    #gameBoard {
+        grid-template-columns: repeat(4, 60px);
+    }
+}
