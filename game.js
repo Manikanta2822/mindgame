@@ -11,22 +11,28 @@ const gameBoard = document.getElementById("gameBoard");
 const moveCountDisplay = document.getElementById("moveCount");
 const scorePlayer1Display = document.getElementById("scorePlayer1");
 const scorePlayer2Display = document.getElementById("scorePlayer2");
-const winnerDisplay = document.getElementById("winner");
-const gameBoardContainer = document.getElementById("gameBoardContainer");
+const winnerOverlay = document.getElementById("winnerOverlay");
+const winnerMessage = document.getElementById("winnerMessage");
+const restartButton = document.getElementById("restartButton");
 const playerInput = document.getElementById("playerInput");
-const player1NameInput = document.getElementById("player1Name");
-const player2NameInput = document.getElementById("player2Name");
+const gameBoardContainer = document.getElementById("gameBoardContainer");
+const homeButton = document.getElementById("homeButton");
 const difficultySelect = document.getElementById("difficulty");
 
-const symbols = ['★', '▲', '●', '♦', '✿', '♣', '☀', '♡', '⚡', '☁', '✈', '✿', '♠', '♤', '☘', '♪'];
+const player1NameInput = document.getElementById("player1Name");
+const player2NameInput = document.getElementById("player2Name");
+
+let player1Name = "Player 1";
+let player2Name = "Player 2";
+
+const symbols = ['★', '▲', '●', '♦', '✿', '♣', '☀', '♡', '⚡', '☁', '✈', '♠', '♤', '☘', '♪'];
 
 let gameCards = [];
-let gridSize = 4;
 let gridDimension = 4;
 
 function shuffleCards() {
     gameCards = [];
-    const selectedSymbols = symbols.slice(0, gridDimension * gridDimension / 2);
+    const selectedSymbols = symbols.slice(0, (gridDimension * gridDimension) / 2);
     gameCards = [...selectedSymbols, ...selectedSymbols];
     gameCards.sort(() => Math.random() - 0.5);
 }
@@ -74,13 +80,10 @@ function checkForMatch() {
         }
 
         if (matchedCards === gridDimension * gridDimension / 2) {
-            setTimeout(() => {
-                declareWinner();
-            }, 500);
+            setTimeout(() => declareWinner(), 500);
         }
 
         flippedCards = [];
-        currentPlayer = currentPlayer === 1 ? 2 : 1;
     } else {
         setTimeout(() => {
             firstCard.classList.remove('flipped');
@@ -92,43 +95,58 @@ function checkForMatch() {
 }
 
 function declareWinner() {
+    let winnerText = "";
     if (player1Score > player2Score) {
-        winnerDisplay.innerHTML = `<h3>${player1NameInput.value} Wins!</h3>`;
+        winnerText = `🎉 Congratulations, ${player1Name}! You win! 🎉`;
     } else if (player2Score > player1Score) {
-        winnerDisplay.innerHTML = `<h3>${player2NameInput.value} Wins!</h3>`;
+        winnerText = `🎉 Congratulations, ${player2Name}! You win! 🎉`;
     } else {
-        winnerDisplay.innerHTML = "<h3>It's a Tie!</h3>";
+        winnerText = `🤝 It's a tie! Well played, ${player1Name} and ${player2Name}!`;
     }
+    winnerMessage.innerHTML = `<h3>${winnerText}</h3>`;
+    winnerOverlay.classList.remove('hidden');
+}
+
+function restartGame() {
+    winnerOverlay.classList.add('hidden');
+    startNewGame();
 }
 
 function startNewGame() {
-    const player1Name = player1NameInput.value;
-    const player2Name = player2NameInput.value;
-    if (!player1Name || !player2Name) {
-        alert("Please enter both player names.");
-        return;
-    }
-
-    playerInput.style.display = 'none';
-    gameBoardContainer.style.display = 'block';
+    gameBoard.innerHTML = '';
+    gridDimension = parseInt(difficultySelect.value);
     matchedCards = 0;
     moveCount = 0;
     player1Score = 0;
     player2Score = 0;
     currentPlayer = 1;
+
+    moveCountDisplay.innerText = moveCount;
     scorePlayer1Display.innerText = player1Score;
     scorePlayer2Display.innerText = player2Score;
-    moveCountDisplay.innerText = moveCount;
 
-    gridDimension = parseInt(difficultySelect.value);
     shuffleCards();
-    gameBoard.innerHTML = '';
-    gameBoard.style.gridTemplateColumns = `repeat(${gridDimension}, 80px)`; // Adjust grid to make it square
-
     gameCards.forEach((value, index) => {
         const card = createCard(value, index);
         gameBoard.appendChild(card);
     });
+
+    gameBoard.style.gridTemplateColumns = `repeat(${gridDimension}, 1fr)`;
 }
 
-startButton.addEventListener('click', startNewGame);
+function goHome() {
+    gameBoardContainer.style.display = 'none';
+    playerInput.style.display = 'flex';
+}
+
+startButton.addEventListener('click', () => {
+    player1Name = player1NameInput.value || "Player 1";
+    player2Name = player2NameInput.value || "Player 2";
+
+    playerInput.style.display = 'none';
+    gameBoardContainer.style.display = 'block';
+    startNewGame();
+});
+
+homeButton.addEventListener('click', goHome);
+restartButton.addEventListener('click', restartGame);
