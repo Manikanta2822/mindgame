@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="playerInput">
-        <h2>Memory Matching Game</h2>
+        <h2>Mind Match</h2>
         <input type="text" id="player1Name" placeholder="Enter Player 1 Name" required>
         <input type="text" id="player2Name" placeholder="Enter Player 2 Name" required>
         <select id="difficulty">
@@ -27,7 +27,12 @@
             <p>Moves: <span id="moveCount">0</span></p>
         </div>
         <div id="gameBoard"></div>
-        <div id="winner"></div>
+        <button id="homeButton">Home</button>
+    </div>
+
+    <div id="winnerOverlay" class="hidden">
+        <div id="winnerMessage"></div>
+        <button id="restartButton">Restart Game</button>
     </div>
 
     <script src="game.js"></script>
